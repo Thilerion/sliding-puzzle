@@ -4,7 +4,13 @@ import {createTiles, updateTiles, animateTile} from './domUtils.js';
 
 const puzzle = document.getElementById('puzzle');
 
-const gridWidth = 5;
+const statEls = {
+	game: document.getElementById('game'),
+	turn: document.getElementById('turn'),
+	avg: document.getElementById('avg')
+};
+
+const gridWidth = 4;
 document.documentElement.style.setProperty('--grid', gridWidth);
 
 let currentTurn = 0;
@@ -44,8 +50,10 @@ class Game {
 	}
 
 	refreshDisplay() {
-		let avg = this.averageTurns || "N/A";
-			this.element.innerText = `Game: ${this.game}, turn: ${this.turn}, average turns of past games: ${avg}.`;
+		const {game, turn, avg} = statEls;
+		game.innerText = this.game;
+		turn.innerText = this.turn;
+		avg.innerText = this.averageTurns || 'N/A';
 		window.localStorage.setItem('tileStats', JSON.stringify({game: this.game, totalTurns: this.totalTurns}));
 	}
 }

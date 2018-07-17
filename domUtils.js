@@ -12,7 +12,17 @@ function createTiles(parent, arr, board) {
 			item.dataset.tile = 0;
 		}
 
-		item.addEventListener("click", (e) => board.swap(e.target.dataset.tile));
+		item.addEventListener("touchstart", (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			return board.swap(e.target.dataset.tile);
+		});
+
+		item.addEventListener("click", (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			return board.swap(e.target.dataset.tile);
+		});
 
 		parent.appendChild(item);
 	}
