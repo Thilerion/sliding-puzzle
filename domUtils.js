@@ -73,4 +73,21 @@ function animateTile(parent, n, [dx, dy]) {
 	});
 }
 
-export {createTiles, updateTiles, animateTile};
+function initControls(board) {
+	const resetEl = document.getElementById('resetStats');
+	resetEl.addEventListener('click', (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		return board.resetStats();
+	});
+
+
+	const restartEl = document.getElementById('restart');
+	restartEl.addEventListener('click', (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		return board.restart();
+	});
+}
+
+export {createTiles, updateTiles, animateTile, initControls};

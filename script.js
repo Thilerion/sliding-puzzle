@@ -1,6 +1,6 @@
 // puzzle size: 500x500
 import {generateTileArray, isSolvable, getInversions} from './utils.js';
-import {createTiles, updateTiles, animateTile} from './domUtils.js';
+import {createTiles, updateTiles, animateTile, initControls} from './domUtils.js';
 
 const puzzle = document.getElementById('puzzle');
 
@@ -10,7 +10,7 @@ const statEls = {
 	avg: document.getElementById('avg')
 };
 
-const gridWidth = 4;
+const gridWidth = 3;
 document.documentElement.style.setProperty('--grid', gridWidth);
 
 let currentTurn = 0;
@@ -56,6 +56,17 @@ class Game {
 		avg.innerText = this.averageTurns || 'N/A';
 		window.localStorage.setItem('tileStats', JSON.stringify({game: this.game, totalTurns: this.totalTurns}));
 	}
+
+	resetCurrent() {
+		this.turn = 1;
+		this.refreshDisplay();
+	}
+
+	resetStats() {
+		this.game = 1;
+		this.totalTurns = 0;
+		this.refreshDisplay();
+	}
 }
 
 
@@ -99,6 +110,15 @@ class Board {
 		return true;
 	}
 
+	restart() {
+		this.gameObj.resetCurrent();
+		return new Board(this.gameObj, this.gridWidth);
+	}
+
+	resetStats() {
+		this.gameObj.resetStats();
+	}
+
 	swap(n) {
 		n -= 0;
 		const emptyTilePos = this.tiles.findIndex(t => t === null);
@@ -131,7 +151,7 @@ class Board {
 			setTimeout(() => {
 				alert("Finished!");
 				this.gameObj.finished();
-				return new Board(this.gridWidth);
+				return new Board(this.gameObj, this.gridWidth);
 			}, 100);
 		} else {
 			return;
@@ -139,8 +159,10 @@ class Board {
 	}
 }
 
+
 const game = new Game(document.getElementById('game'));
 const board = new Board(game, gridWidth);
+initControls(board);
 
 // board.setCustomTiles([1,2,3,4,5,6,null,7,8]);
 
